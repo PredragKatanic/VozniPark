@@ -28,4 +28,4 @@ class RadniNalogOut(RadniNalogBase):
     vozac: VozacOut
 
     class Config:
-        orm_mode = True
+        from_attributes = True

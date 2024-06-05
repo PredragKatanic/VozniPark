@@ -1,18 +1,19 @@
-version: '3.1'
 
 services:
   db:
-    image: mysql:latest
+    container_name: db
+    image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: predrag
-      MYSQL_DATABASE: voznipark
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3306:3306"
     volumes:
-      - dbdata:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
 
   phpmyadmin:
+    container_name: myadmin
     image: phpmyadmin/phpmyadmin:latest
     restart: always
     ports:
@@ -23,5 +24,22 @@ services:
     depends_on:
       - db 
 
+  app:
+    container_name: app_backend
+    build: .
+    image: app_backend
+    restart: always
+    env_file: 
+      - .env
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+
 volumes:
-  dbdata:  # persistentni volumen za MySQL
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/db_data

@@ -1,31 +1,25 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
-from .vozac import VozacOut  # Pretpostavka da imate ovu shemu
-from .vozilo import VoziloOut  # Pretpostavka da imate ovu shemu
+from enum import Enum
+
+class StatusRadnogNalogaEnum(str, Enum):
+    otvoren = 'otvoren'
+    u_toku = 'u toku'
+    zavrsen = 'zavrsen'
 
 class RadniNalogBase(BaseModel):
-    opis_zadatka: str
-    datum_i_vrijeme_izdavanja: Optional[datetime] = None
-    rok_zavrsavanja: Optional[datetime] = None
-    status: str
-
-class RadniNalogCreate(RadniNalogBase):
     vozilo_id: int
     vozac_id: int
+    opis_zadatka: str
+    datum_i_vrijeme_izdavanja: datetime
+    rok_zavrsavanja: datetime
+    status: StatusRadnogNalogaEnum
 
-class RadniNalogUpdate(BaseModel):
-    opis_zadatka: Optional[str] = None
-    datum_i_vrijeme_izdavanja: Optional[datetime] = None
-    rok_zavrsavanja: Optional[datetime] = None
-    status: Optional[str] = None
-    vozilo_id: Optional[int] = None
-    vozac_id: Optional[int] = None
+class RadniNalogCreate(RadniNalogBase):
+    pass
 
 class RadniNalogOut(RadniNalogBase):
     id: int
-    vozilo: VoziloOut
-    vozac: VozacOut
 
     class Config:
-        from_attributes = True
+        orm_mode = True

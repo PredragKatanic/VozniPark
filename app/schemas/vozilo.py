@@ -1,37 +1,31 @@
 from pydantic import BaseModel
 from datetime import date
-from typing import Optional
+from enum import Enum
 
-# Shema za kreiranje novog vozila
-class VoziloCreate(BaseModel):
+class TipGorivaEnum(str, Enum):
+    dizel = 'dizel'
+    benzin = 'benzin'
+    plin = 'plin'
+
+class StatusVozilaEnum(str, Enum):
+    dostupno = 'dostupno'
+    u_servisu = 'u servisu'
+    rezervisano = 'rezervisano'
+
+class VoziloBase(BaseModel):
     marka: str
     model: str
     registracijski_broj: str
     datum_isteka_registracije: date
     godina_proizvodnje: int
-    tip_goriva: str  # Možete koristiti Enum ako želite striktnu validaciju
-    status: str
+    tip_goriva: TipGorivaEnum
+    status: StatusVozilaEnum
 
-# Shema za ažuriranje vozila
-class VoziloUpdate(BaseModel):
-    marka: Optional[str] = None
-    model: Optional[str] = None
-    registracijski_broj: Optional[str] = None
-    datum_isteka_registracije: Optional[date] = None
-    godina_proizvodnje: Optional[int] = None
-    tip_goriva: Optional[str] = None
-    status: Optional[str] = None
+class VoziloCreate(VoziloBase):
+    pass
 
-# Shema za prikaz vozila
-class VoziloOut(BaseModel):
+class VoziloOut(VoziloBase):
     id: int
-    marka: str
-    model: str
-    registracijski_broj: str
-    datum_isteka_registracije: date
-    godina_proizvodnje: int
-    tip_goriva: str
-    status: str
 
     class Config:
-        from_attributes = True
+        orm_mode = True

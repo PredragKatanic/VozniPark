@@ -4,12 +4,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  # Ova linija učitava promenljive iz .env fajla
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
 
-# Citanje iz .env fajla, mora se napraviti fajl
+# MYSQL_ROOT_PASSWORD = os.getenv("MYSQL_ROOT_PASSWORD")
+# MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
+
 DATABASE_URL = os.getenv("DATABASE_URL")
-# Direktan unos
-# DATABASE_URL="mysql+mysqlconnector://vozac:vozilo@localhost/voznipark"
+
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -83,7 +83,7 @@ def populate_vozaci():
 
 def populate_radni_nalozi():
     for nalog in radni_nalozi:
-        response = requests.post(f"{BASE_URL}/radni_nalozi/", json=nalog)
+        response = requests.post(f"{BASE_URL}/radni-nalozi/", json=nalog)
         if response.status_code == 200 or response.status_code == 201:
             print(f"Uspešno dodat radni nalog za vozilo ID {nalog['vozilo_id']} i vozača ID {nalog['vozac_id']}")
         else:

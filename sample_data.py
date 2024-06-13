@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 
-BASE_URL = "http://localhost:8000"  # Ili odgovarajući URL vaše API aplikacije
+BASE_URL = "http://localhost/api/"  # Ili odgovarajući URL vaše API aplikacije
 
 # Testni podaci za vozila
 vozila = [

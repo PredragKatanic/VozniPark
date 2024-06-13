@@ -1,4 +1,4 @@
-BASE_URL = "http://192.168.0.116:8000/"
+const BASE_URL = "/api/";
 
 function w3_open() {
     document.getElementById("main").style.marginLeft = "25%";

@@ -4,7 +4,7 @@ from api.routes.vozilo import router as vozila_router
 from api.routes.vozac import router as vozaci_router
 from api.routes.radni_nalog import router as radni_nalozi_router
 
-api_router = APIRouter()
+api_router = APIRouter(prefix="/api")
 
 
 api_router.include_router(vozila_router, prefix="/vozila", tags=["Vozila"])

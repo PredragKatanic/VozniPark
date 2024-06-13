@@ -7,20 +7,16 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-    ports:
-      - "3306:3306"
     volumes:
-      - ./db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
 
   phpmyadmin:
     container_name: myadmin
     image: phpmyadmin/phpmyadmin:latest
     restart: always
-    ports:
-      - "8080:80"
     environment:
       PMA_HOST: db 
-      MYSQL_ROOT_PASSWORD: predrag 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       - db 
 
@@ -31,22 +27,37 @@ services:
       dockerfile: Dockerfile.backend
     image: app_backend
     restart: always
-    env_file: 
-      - .env
     ports:
       - "8000:80"
+    env_file: 
+      - .env
     depends_on:
       - db
+
   web:
     container_name: app_frontend
     build:
       context: .
       dockerfile: Dockerfile.frontend
-    ports:
-      - "80:80"
+    image: app_frontend
     restart: always
     depends_on:
       - db
+
+  proxy:
+    container_name: proxy
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    image: app_proxy
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+      - web
+      - phpmyadmin
+
 volumes:
   db_data:
     driver: local
